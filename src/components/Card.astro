@@ -1,0 +1,39 @@
+---
+import type { CollectionEntry } from "astro:content";
+import FormattedDate from "../components/FormattedDate.astro";
+interface Props {
+    href: string;
+    frontmatter: CollectionEntry<"blog">["data"];
+}
+
+const {
+    href,
+    frontmatter: { title, description, pubDate, updatedDate },
+} = Astro.props;
+---
+
+<li class="my-6">
+    <a
+        class="flex items-center justify-between inline-block underline-offset-4"
+        href={`/blog/${href}/`}
+    >
+        <h5
+            class="text-2xl font-medium color-[#006cac] decoration-dashed hover:underline"
+        >
+            {title}
+        </h5>
+        <div class="text-sm text-coolgray italic">
+            {
+                updatedDate ? (
+                    <span class="text-sm text-coolgray italic">
+                        更新于
+                        <FormattedDate date={updatedDate} />
+                    </span>
+                ) : (
+                    <FormattedDate date={pubDate} />
+                )
+            }
+        </div>
+    </a>
+    <p>{description}</p>
+</li>

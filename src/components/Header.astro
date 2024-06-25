@@ -1,0 +1,35 @@
+---
+import HeaderLink from "./HeaderLink.astro";
+---
+
+<header class="p-4">
+	<nav class="py-4 px-8 flex justify-between items-center  gap-x-4">
+		<a href="/"> <img src="/root.svg" /></a>
+		<div class="flex gap-4">
+			<HeaderLink href="/my-blog/">首页</HeaderLink>
+			<HeaderLink href="/my-blog/blog">文章</HeaderLink>
+		</div>
+	</nav>
+</header>
+<style>
+	nav {
+		margin: auto;
+		max-width: 768px;
+		background: transparent;
+		border-radius: 50px;
+		border: 4px solid #dcdfe6;
+	}
+	nav a.active {
+		position: relative;
+	}
+	nav a.active::before {
+		content: "";
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 0.25rem;
+		background-color: var(--theme-primary)
+		border-radius: 50px;
+	}
+</style>

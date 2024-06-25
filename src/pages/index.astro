@@ -1,0 +1,82 @@
+---
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import Card from "../components/Card.astro";
+const today = new Date();
+
+const getSortedPosts = (posts: CollectionEntry<"blog">[]) => {
+	return posts.sort(
+		(a, b) =>
+			Math.floor(
+				new Date(b.data.updatedDate ?? b.data.pubDate).getTime() / 1000,
+			) -
+			Math.floor(
+				new Date(a.data.updatedDate ?? a.data.pubDate).getTime() / 1000,
+			),
+	);
+};
+const posts = await getCollection("blog");
+const p = getSortedPosts(posts);
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1
+				class="text-6xl font-bold pb-4"
+				style="background: -webkit-linear-gradient(310deg, #42d392 25%, #647eff);-webkit-background-clip: text;-webkit-text-fill-color: transparent"
+			>
+				Lzy's Blog
+				<span style="font-size:medium;color:#42B883"
+					>山外有人，人外有山。</span
+				>
+			</h1>
+			<p class="text-2xl font-900 py-4">
+				<strong>廉志远</strong>-河南洛阳
+			</p>
+			<p class="font-200">前端开发工程师</p>
+			<p class="font-200">
+				励志成为一名送外卖的前端工程师(bushi)，{
+					today.getFullYear()
+				}年前端还活着吗？
+			</p>
+
+			<p class="py-4 font-600">个人技术栈：</p>
+			<ul class="p-0 flex gap-4">
+				<li><img src="/html.svg" /></li>
+				<li><img src="/js.svg" /></li>
+				<li><img src="/react.svg" /></li>
+				<li><img src="/vue.svg" /></li>
+				<li><img src="/vite.svg" /></li>
+				<li><img src="/nest.svg" /></li>
+				<li><img src="/python.svg" /></li>
+			</ul>
+			<hr class="my-6" />
+			{
+				p.length > 0 && (
+					<section id="recent-posts">
+						<h1 class="text-xl font-bold">近期文章</h1>
+						<ul>
+							{p.map(
+								({ data, slug }, index) =>
+									index < 4 && (
+										<Card href={slug} frontmatter={data} />
+									),
+							)}
+						</ul>
+					</section>
+				)
+			}
+		</main>
+		<Footer />
+	</body>
+</html>
